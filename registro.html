@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Jugadores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <h1 class="nav-title">📋 Registro de Jugadores</h1>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Constructor</a></li>
+            <li><a href="registro.html" class="nav-link active">Registro</a></li>
+            <li><a href="campeones.html" class="nav-link">Campeones</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="registro-container">
+    <!-- SECCIÓN DE FORMULARIO -->
+    <section class="registro-form-section">
+        <div class="form-card">
+            <h2>✏️ Nuevo Jugador</h2>
+            <form id="playerForm">
+                <div class="form-group">
+                    <label for="playerName">👤 Nombre:</label>
+                    <input type="text" id="playerName" placeholder="Ej: Juan García" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerCenter">🏫 Centro:</label>
+                    <input type="text" id="playerCenter" placeholder="Ej: IES San José" required>
+                </div>
+                <button type="submit" class="btn-submit">➕ Agregar Jugador</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE JUGADORES -->
+    <section class="players-section">
+        <h2>🏆 Tabla de Puntos</h2>
+        <div id="playersContainer" class="players-container">
+            <p class="empty-state">No hay jugadores registrados aún. ¡Agrega el primero!</p>
+        </div>
+    </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

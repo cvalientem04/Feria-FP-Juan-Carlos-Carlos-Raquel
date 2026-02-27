@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Campeones</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <h1 class="nav-title">🏆 Campeones</h1>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Constructor</a></li>
+            <li><a href="registro.html" class="nav-link">Registro</a></li>
+            <li><a href="campeones.html" class="nav-link active">Campeones</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="campeones-container">
+
+    <!-- MENSAJE INFORMATIVO -->
+    <div class="campeones-info">
+        <p>🔄 Los participantes se van añadiendo poco a poco. ¡Los que más puntos acumulen serán los ganadores!</p>
+    </div>
+
+    <!-- PODIO TOP 3 -->
+    <section class="podio-section" id="podioSection">
+        <h2>🏅 Podio de Honor</h2>
+        <div class="podio" id="podio">
+            <!-- Se genera dinámicamente -->
+        </div>
+    </section>
+
+    <!-- TABLA COMPLETA DE RANKING -->
+    <section class="ranking-section">
+        <h2>📊 Ranking General</h2>
+        <div id="rankingContainer" class="ranking-container">
+            <p class="empty-state">Aún no hay participantes. ¡Regístralos en la sección de Registro!</p>
+        </div>
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

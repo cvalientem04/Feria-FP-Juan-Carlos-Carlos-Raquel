@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructor Visual Java</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <h1 class="nav-title">🧩 Constructor Visual Java</h1>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link active">Constructor</a></li>
+            <li><a href="registro.html" class="nav-link">Registro</a></li>
+            <li><a href="campeones.html" class="nav-link">Campeones</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="app-container">
+
+    <!-- ================= PANEL IZQUIERDO ================= -->
+    <aside class="palette" id="palette">
+        <h2>📘 Bloques</h2>
+        <!-- Se cargan dinámicamente desde blocks.json -->
+    </aside>
+
+    <!-- ================= ZONA DE TRABAJO ================= -->
+    <main class="workspace">
+        <h2>🖥 Zona de Trabajo</h2>
+        <p class="hint" id="dropHint">Arrastra bloques aquí para construir tu programa</p>
+        <div id="dropZone" class="drop-zone">
+            <!-- bloques aquí -->
+        </div>
+    </main>
+
+</div>
+
+<!-- ================= RESULTADO ABAJO ================= -->
+<section class="result-section">
+    <div class="result-buttons">
+        <button id="generateBtn">📄 Generar código Java</button>
+        <button id="runBtn">▶ Ejecutar</button>
+        <button id="clearBtn">🗑 Limpiar todo</button>
+    </div>
+    <pre id="outputCode"></pre>
+    <div id="executionResult" class="execution-result"></div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{
+  "categories": [
+    {
+      "id": "variables",
+      "name": "Variables",
+      "icon": "🟦",
+      "cssClass": "variables",
+      "blocks": [
+        { "code": "int a = 5;" },
+        { "code": "int b = 3;" },
+        { "code": "int c = 10;" },
+        { "code": "int result = 0;" },
+        { "code": "boolean condition = true;" },
+        { "code": "double price = 9.99;" },
+        { "code": "String name = \"Ana\";" }
+      ]
+    },
+    {
+      "id": "operations",
+      "name": "Operaciones",
+      "icon": "🟪",
+      "cssClass": "operations",
+      "blocks": [
+        { "code": "result = a + b;" },
+        { "code": "result = a - b;" },
+        { "code": "result = a * b;" },
+        { "code": "result = a / b;" },
+        { "code": "result = result + 1;" },
+        { "code": "result = result - 2;" },
+        { "code": "result = a % b;" },
+        { "code": "double total = price * 3;" }
+      ]
+    },
+    {
+      "id": "conditions",
+      "name": "Condiciones",
+      "icon": "🟨",
+      "cssClass": "conditions",
+      "blocks": [
+        { "code": "if (result > 10) { }", "type": "container" },
+        { "code": "if (a > b) { }", "type": "container" },
+        { "code": "else { }", "type": "container" },
+        { "code": "if (condition) { }", "type": "container" },
+        { "code": "if (total > 20) { }", "type": "container" }
+      ]
+    },
+    {
+      "id": "loops",
+      "name": "Bucles",
+      "icon": "🟧",
+      "cssClass": "loops",
+      "blocks": [
+        { "code": "for (int i = 0; i < 5; i++) { }", "type": "container" },
+        { "code": "while (result < 20) { }", "type": "container" },
+        { "code": "for (int i = 0; i < 10; i++) { result = result + i; }" }
+      ]
+    },
+    {
+      "id": "logical",
+      "name": "Operadores lógicos",
+      "icon": "🟩",
+      "cssClass": "logical",
+      "blocks": [
+        { "code": "condition = (a > b) && (result < 10);" },
+        { "code": "condition = (name.equals(\"Ana\")) || (b > 5);" },
+        { "code": "result = (a > b) ? a : b;" }
+      ]
+    },
+    {
+      "id": "assignment",
+      "name": "Asignación a nuevas variables",
+      "icon": "🟦",
+      "cssClass": "assignment",
+      "blocks": [
+        { "code": "int sum = a + b;" },
+        { "code": "double average = (a + b + c) / 3;" },
+        { "code": "boolean check = (result > 0);" }
+      ]
+    }
+  ]
+}
