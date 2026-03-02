@@ -15,20 +15,21 @@ public class ejemplose {
 
 
 
-        //ej 8
-                                            //int i = 0
-        int contador = 0;                   //int contador = 0
+        //ej 8 mostrar los numeros superiores a 5 entre los 10 primeros
+                                            //int i = 0                      
+        int contador = 0;                   //int contador = 0               //int contador = 0
 
 
-        for (int i = 1; i <= 10; i++) {     // repetir (i = i + 1)                 
-                                               mientras (i <11)
-            if (i > 5) {                    //if (i > 5)
-                contador++;                 // contador = contador + 1
-            }
-        }                    
+        for (int i = 1; i <= 10; i++) {     // repetir (i = i + 1)          //repetir              
+                                               mientras (i <11)                  //i=i+1
+            if (i > 5) {                    //if (i > 5)                         //if (i > 5)
+                contador++;                 // contador = contador + 1           // contador = contador + 1
+
+            }                                                             //mientras i <11
+        }                                                                 //print("Del 1 al 10 hay " + contador + " numeros mayores que 5")
 
 
-        System.out.println("[!] Del 1 al 10 hay " + contador + " numeros mayores que 5");
+        System.out.println("[!] Del 1 al 10 hay " + contador + " numeros mayores que 5");       //print("Del 1 al 10 hay " + contador + " numeros mayores que 5")
 
 
         //ej 9
