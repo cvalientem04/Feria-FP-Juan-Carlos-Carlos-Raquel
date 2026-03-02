@@ -4,77 +4,105 @@
       "id": "variables",
       "name": "Variables",
       "icon": "🟦",
-      "cssClass": "variables",
       "blocks": [
-        { "code": "int a = 5;" },
-        { "code": "int b = 3;" },
-        { "code": "int c = 10;" },
-        { "code": "int result = 0;" },
-        { "code": "boolean condition = true;" },
-        { "code": "double price = 9.99;" },
-        { "code": "String name = \"Ana\";" }
+        {
+          "code": "String texto\ntexto = \"Hola mundo\"",
+          "javaCode": "String texto = \"Hola mundo\";"
+        },
+        {
+          "code": "int i = 0",
+          "javaCode": "int i = 0;"
+        },
+        {
+          "code": "int contador = 0",
+          "javaCode": "int contador = 0;"
+        },
+        {
+          "code": "int edad = 19",
+          "javaCode": "int edad = 19;"
+        },
+        {
+          "code": "int numero",
+          "javaCode": "int numero;"
+        },
+        {
+          "code": "int resultado",
+          "javaCode": "int resultado;"
+        }
       ]
     },
     {
       "id": "operations",
       "name": "Operaciones",
       "icon": "🟪",
-      "cssClass": "operations",
       "blocks": [
-        { "code": "result = a + b;" },
-        { "code": "result = a - b;" },
-        { "code": "result = a * b;" },
-        { "code": "result = a / b;" },
-        { "code": "result = result + 1;" },
-        { "code": "result = result - 2;" },
-        { "code": "result = a % b;" },
-        { "code": "double total = price * 3;" }
+        {
+          "code": "i = i + 1",
+          "javaCode": "i = i + 1;"
+        },
+        {
+          "code": "contador = contador + 1",
+          "javaCode": "contador = contador + 1;"
+        },
+        {
+          "code": "suma = suma + a",
+          "javaCode": "suma = suma + a;"
+        },
+        {
+          "code": "resultado = 3 + 5",
+          "javaCode": "resultado = 3 + 5;"
+        }
       ]
     },
     {
       "id": "conditions",
       "name": "Condiciones",
       "icon": "🟨",
-      "cssClass": "conditions",
       "blocks": [
-        { "code": "if (result > 10) { }", "type": "container" },
-        { "code": "if (a > b) { }", "type": "container" },
-        { "code": "else { }", "type": "container" },
-        { "code": "if (condition) { }", "type": "container" },
-        { "code": "if (total > 20) { }", "type": "container" }
+        {
+          "code": "if (edad > 18)\nprintln(\"mayor de edad\")",
+          "javaCode": "if (edad > 18) { System.out.println(\"mayor de edad\"); }",
+          "type": "container"
+        },
+        {
+          "code": "else\nprintln(\"menor de edad\")",
+          "javaCode": "else { System.out.println(\"menor de edad\"); }",
+          "type": "container"
+        },
+        {
+          "code": "if (i > 5)\ncontador = contador + 1",
+          "javaCode": "if (i > 5) { contador = contador + 1; }",
+          "type": "container"
+        }
       ]
     },
     {
       "id": "loops",
       "name": "Bucles",
       "icon": "🟧",
-      "cssClass": "loops",
       "blocks": [
-        { "code": "for (int i = 0; i < 5; i++) { }", "type": "container" },
-        { "code": "while (result < 20) { }", "type": "container" },
-        { "code": "for (int i = 0; i < 10; i++) { result = result + i; }" }
-      ]
-    },
-    {
-      "id": "logical",
-      "name": "Operadores lógicos",
-      "icon": "🟩",
-      "cssClass": "logical",
-      "blocks": [
-        { "code": "condition = (a > b) && (result < 10);" },
-        { "code": "condition = (name.equals(\"Ana\")) || (b > 5);" },
-        { "code": "result = (a > b) ? a : b;" }
-      ]
-    },
-    {
-      "id": "assignment",
-      "name": "Asignación a nuevas variables",
-      "icon": "🟦",
-      "cssClass": "assignment",
-      "blocks": [
-        { "code": "int sum = a + b;" },
-        { "code": "double average = (a + b + c) / 3;" },
-        { "code": "boolean check = (result > 0);" }
+        {
+          "code": "repetir",
+          "javaCode": "do{",
+          "type": "container"
+        },
+
+        {
+          "code": "mientras a < 6",
+          "javaCode": "}while (a<6);",
+          "type": "container"
+        },
+
+        {
+          "code": "repetir (a = a + 1)\nmientras (a < 6)\nprintln(\"Hola\")",
+          "javaCode": "do { a = a + 1; System.out.println(\"Hola\"); } while (a < 6);",
+          "type": "container"
+        },
+        {
+          "code": "repetir (contador = contador + 1)\nmientras (contador < 11)\nprintln(contador)",
+          "javaCode": "do { contador = contador + 1; System.out.println(contador); } while (contador < 11);",
+          "type": "container"
+        }
       ]
     }
   ]
