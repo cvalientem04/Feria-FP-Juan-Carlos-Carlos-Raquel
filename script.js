@@ -258,12 +258,30 @@ function initConstructor() {
         code    += '    public static void main(String[] args) {\n';
 
         let indent = 2; // nivel de indentación (cada nivel = 4 espacios)
+        let indentNextOnly = false; // para if/else sin llaves
 
         lines.forEach(line => {
             const trimmed = line.trim();
 
-            // Si la línea cierra bloque, reducir indent primero
-            if (trimmed === '}' || trimmed.startsWith('} ')) {
+            // Si la línea anterior era if/else sin llaves, esta línea es el cuerpo
+            if (indentNextOnly) {
+                // Si es un else, va al mismo nivel que el if (reducir primero)
+                if (trimmed === 'else') {
+                    indent = Math.max(2, indent - 1);
+                    code += '    '.repeat(indent) + trimmed + '\n';
+                    // El else también indenta la siguiente línea
+                    indent++;
+                    return;
+                }
+                // Línea normal: imprimir indentada y volver al nivel anterior
+                code += '    '.repeat(indent) + trimmed + '\n';
+                indent = Math.max(2, indent - 1);
+                indentNextOnly = false;
+                return;
+            }
+
+            // Si la línea cierra bloque (}, }while, } else)
+            if (trimmed === '}' || trimmed.startsWith('} ') || trimmed.startsWith('}while')) {
                 indent = Math.max(2, indent - 1);
             }
 
@@ -274,6 +292,11 @@ function initConstructor() {
                 // bloque vacío → no cambiar indent
             } else if (trimmed.endsWith('{')) {
                 indent++;
+            }
+            // if/else sin llaves → indentar solo la siguiente línea
+            else if (trimmed.match(/^if\s*\(.+\)\s*$/) || trimmed === 'else') {
+                indent++;
+                indentNextOnly = true;
             }
         });
 
@@ -341,8 +364,26 @@ function initConstructor() {
                 if (!line || line === '{' || line === '}') { idx++; continue; }
 
                 try {
+                    // do-while loop
+                    let m = line.match(/^do\s*\{$/);
+                    if (m) {
+                        const closeIdx = findClose(idx, end);
+                        const closeLine = lines[closeIdx].trim();
+                        const whileMatch = closeLine.match(/\}while\s*\((.+)\)\s*;?$/);
+
+                        if (whileMatch) {
+                            let safety = 0;
+                            do {
+                                run(idx + 1, closeIdx - 1);
+                                safety++;
+                            } while (evalBoolExpr(whileMatch[1], vars) && safety < 1000);
+                        }
+                        idx = closeIdx + 1;
+                        continue;
+                    }
+
                     // for loop
-                    let m = line.match(/^for\s*\((.+)\)\s*\{$/);
+                    m = line.match(/^for\s*\((.+)\)\s*\{$/);
                     if (m) {
                         const closeIdx = findClose(idx, end);
                         const parts = m[1].split(';').map(s => s.trim());
@@ -372,7 +413,7 @@ function initConstructor() {
                         continue;
                     }
 
-                    // if / else
+                    // if / else CON llaves
                     m = line.match(/^if\s*\((.+)\)\s*\{$/);
                     if (m) {
                         const closeIdx = findClose(idx, end);
@@ -387,8 +428,44 @@ function initConstructor() {
                         continue;
                     }
 
-                    // } else { — se maneja desde el if, saltar
+                    // if SIN llaves (una sola instrucción)
+                    m = line.match(/^if\s*\((.+)\)\s*$/);
+                    if (m) {
+                        const condition = evalBoolExpr(m[1], vars);
+                        const bodyIdx = idx + 1;
+
+                        if (bodyIdx <= end) {
+                            if (condition) {
+                                executeSingleLine(lines[bodyIdx].trim());
+                            }
+                            idx = bodyIdx + 1;
+
+                            // Comprobar si hay else después
+                            if (idx <= end && lines[idx].trim() === 'else') {
+                                const elseBodyIdx = idx + 1;
+                                if (elseBodyIdx <= end) {
+                                    if (!condition) {
+                                        executeSingleLine(lines[elseBodyIdx].trim());
+                                    }
+                                    idx = elseBodyIdx + 1;
+                                } else {
+                                    idx++;
+                                }
+                            }
+                        } else {
+                            idx++;
+                        }
+                        continue;
+                    }
+
+                    // else suelto (ya procesado desde el if, saltar)
+                    if (line === 'else') { idx += 2; continue; }
+
+                    // } else { — se maneja desde el if con llaves, saltar
                     if (line === '} else {') { idx++; continue; }
+
+                    // }while(...) — se maneja desde el do, saltar
+                    if (line.startsWith('}while')) { idx++; continue; }
 
                     // Línea normal
                     executeSingleLine(line);

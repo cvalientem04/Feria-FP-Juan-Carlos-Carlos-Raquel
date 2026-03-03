@@ -12,7 +12,8 @@
         { "display": "int contador = 0", "code": "int contador = 0;" },
         { "display": "int edad = 19", "code": "int edad = 19;" },
         { "display": "int a = 0", "code": "int a = 0;" },
-        { "display": "int suma = 0", "code": "int suma = 0;" }
+        { "display": "int suma = 0", "code": "int suma = 0;" },
+        { "display": "int i = 1", "code": "int i = 1;"}
       ]
     },
     {
@@ -35,10 +36,10 @@
       "icon": "🟨",
       "cssClass": "conditions",
       "blocks": [
-        { "display": "if (a > 10)", "code": "if (a > 10) {" },
-        { "display": "if (i > 5)", "code": "if (i > 5) {" },
-        { "display": "if (edad > 18)", "code": "if (edad > 18) {" },
-        { "display": "else", "code": "} else {" }
+        { "display": "if (a > 10)", "code": "if (a > 10) " },
+        { "display": "if (i > 5)", "code": "if (i > 5) " },
+        { "display": "if (edad > 18)", "code": "if (edad > 18) " },
+        { "display": "else", "code": " else " }
       ]
     },
     {
@@ -65,8 +66,7 @@
         { "display": "println(resultado)", "code": "System.out.println(resultado);" },
         { "display": "println(contador)", "code": "System.out.println(contador);" },
         { "display": "println(\"Hola\")", "code": "System.out.print(\"Hola.\");" },
-        { "display": "println(a)", "code": "System.out.println(a);" },
-        { "display": "println(\"es mayor que 10\")", "code": "System.out.println(\"es mayor que 10\");" },
+        { "display": "println(a es mayor que 10)", "code": "System.out.println(a + (\"es mayor que 10\"));" },
         { "display": "println(suma)", "code": "System.out.println(suma);" },
         { "display": "println(\"mayor de edad\")", "code": "System.out.println(\"Eres mayor de edad\");" },
         { "display": "println(\"menor de edad\")", "code": "System.out.println(\"Eres menor de edad\");" },
