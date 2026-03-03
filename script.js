@@ -62,12 +62,14 @@ function initConstructor() {
             section.appendChild(title);
 
             cat.blocks.forEach(b => {
+                const blockCss = b.cssClass || cat.cssClass;
                 const block = document.createElement('div');
-                block.className = 'block cat-' + cat.cssClass;
-                block.textContent = b.code;
+                block.className = 'block cat-' + blockCss;
+                block.textContent = b.display || b.code;
                 block.draggable = true;
                 block.dataset.code     = b.code;
-                block.dataset.category = cat.cssClass;
+                block.dataset.display  = b.display || b.code;
+                block.dataset.category = blockCss;
                 if (b.type) block.dataset.type = b.type;
 
                 // Drag desde paleta
@@ -116,7 +118,8 @@ function initConstructor() {
         if (dragSource === 'palette' && draggedBlock) {
             const wsBlock = createWorkspaceBlock(
                 draggedBlock.dataset.code,
-                draggedBlock.dataset.category
+                draggedBlock.dataset.category,
+                draggedBlock.dataset.display
             );
             if (insertBefore) {
                 dropZone.insertBefore(wsBlock, insertBefore);
@@ -176,16 +179,17 @@ function initConstructor() {
     }
 
     // ─── Crear bloque en zona de trabajo ───
-    function createWorkspaceBlock(code, category) {
+    function createWorkspaceBlock(code, category, display) {
         const div = document.createElement('div');
         div.className = 'workspace-block cat-' + category;
         div.draggable = true;
         div.dataset.code     = code;
+        div.dataset.display  = display || code;
         div.dataset.category = category;
 
         const span = document.createElement('span');
         span.className = 'code-text';
-        span.textContent = code;
+        span.textContent = display || code;
         div.appendChild(span);
 
         const btn = document.createElement('button');
@@ -243,7 +247,7 @@ function initConstructor() {
             const trimmed = line.trim();
 
             // Si la línea cierra bloque, reducir indent primero
-            if (trimmed === '}') {
+            if (trimmed === '}' || trimmed.startsWith('} ')) {
                 indent = Math.max(2, indent - 1);
             }
 
@@ -283,123 +287,215 @@ function initConstructor() {
     function simulateExecution(lines) {
         const vars = {};
         const errors = [];
+        const output = [];
 
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            try {
-                executeLine(line, vars);
-            } catch (err) {
-                errors.push({ line: i + 1, code: line, message: err.message });
+        // ─── Buscar llave de cierre correspondiente ───
+        function findClose(startIdx, maxIdx) {
+            let depth = 0;
+            for (let j = startIdx; j <= maxIdx; j++) {
+                const l = lines[j].trim();
+                for (const ch of l) {
+                    if (ch === '{') depth++;
+                    if (ch === '}') depth--;
+                }
+                if (depth === 0 && j > startIdx) return j;
+            }
+            return maxIdx;
+        }
+
+        // ─── Buscar } else { dentro de un bloque if ───
+        function findElseInBlock(ifOpen, ifClose) {
+            let depth = 0;
+            for (let j = ifOpen + 1; j < ifClose; j++) {
+                const l = lines[j].trim();
+                if (l === '} else {' && depth === 0) return j;
+                for (const ch of l) {
+                    if (ch === '{') depth++;
+                    if (ch === '}') depth--;
+                }
+            }
+            return -1;
+        }
+
+        // ─── Ejecutar bloque de líneas recursivamente ───
+        function run(start, end) {
+            let idx = start;
+            while (idx <= end) {
+                const line = lines[idx].trim();
+                if (!line || line === '{' || line === '}') { idx++; continue; }
+
+                try {
+                    // for loop
+                    let m = line.match(/^for\s*\((.+)\)\s*\{$/);
+                    if (m) {
+                        const closeIdx = findClose(idx, end);
+                        const parts = m[1].split(';').map(s => s.trim());
+                        if (parts.length === 3) {
+                            executeSingleLine(parts[0] + ';');
+                            let safety = 0;
+                            while (evalBoolExpr(parts[1], vars) && safety < 1000) {
+                                run(idx + 1, closeIdx - 1);
+                                executeSingleLine(parts[2] + ';');
+                                safety++;
+                            }
+                        }
+                        idx = closeIdx + 1;
+                        continue;
+                    }
+
+                    // while loop
+                    m = line.match(/^while\s*\((.+)\)\s*\{$/);
+                    if (m) {
+                        const closeIdx = findClose(idx, end);
+                        let safety = 0;
+                        while (evalBoolExpr(m[1], vars) && safety < 1000) {
+                            run(idx + 1, closeIdx - 1);
+                            safety++;
+                        }
+                        idx = closeIdx + 1;
+                        continue;
+                    }
+
+                    // if / else
+                    m = line.match(/^if\s*\((.+)\)\s*\{$/);
+                    if (m) {
+                        const closeIdx = findClose(idx, end);
+                        const elseIdx  = findElseInBlock(idx, closeIdx);
+
+                        if (evalBoolExpr(m[1], vars)) {
+                            run(idx + 1, elseIdx >= 0 ? elseIdx - 1 : closeIdx - 1);
+                        } else if (elseIdx >= 0) {
+                            run(elseIdx + 1, closeIdx - 1);
+                        }
+                        idx = closeIdx + 1;
+                        continue;
+                    }
+
+                    // } else { — se maneja desde el if, saltar
+                    if (line === '} else {') { idx++; continue; }
+
+                    // Línea normal
+                    executeSingleLine(line);
+                } catch (err) {
+                    errors.push({ line: idx + 1, code: line, message: err.message });
+                }
+                idx++;
             }
         }
 
-        return { vars, errors };
-    }
+        // ─── Ejecutar una línea individual ───
+        function executeSingleLine(line) {
+            if (line === '{' || line === '}' || line === '{ }' || line === '{}') return;
+            let stmt = line.replace(/;$/, '').trim();
+            let m;
 
-    function executeLine(line, vars) {
-        // Ignorar llaves sueltas y bloques vacíos
-        if (line === '{' || line === '}' || line === '{ }' || line === '{}') return;
+            // System.out.println(...)
+            m = stmt.match(/^System\.out\.println\((.+)\)$/);
+            if (m) { output.push(evalPrintArg(m[1])); return; }
 
-        // Remover ; final
-        let stmt = line.replace(/;$/, '').trim();
+            // System.out.print(...)
+            m = stmt.match(/^System\.out\.print\((.+)\)$/);
+            if (m) { output.push(evalPrintArg(m[1])); return; }
 
-        // ─── Declaraciones: int x = expr; ───
-        let m;
-
-        // int x = expr;
-        m = stmt.match(/^int\s+(\w+)\s*=\s*(.+)$/);
-        if (m) {
-            vars[m[1]] = { type: 'int', value: Math.floor(evalExpr(m[2], vars)) };
-            return;
-        }
-
-        // double x = expr;
-        m = stmt.match(/^double\s+(\w+)\s*=\s*(.+)$/);
-        if (m) {
-            vars[m[1]] = { type: 'double', value: evalExpr(m[2], vars) };
-            return;
-        }
-
-        // boolean x = expr;
-        m = stmt.match(/^boolean\s+(\w+)\s*=\s*(.+)$/);
-        if (m) {
-            vars[m[1]] = { type: 'boolean', value: evalBoolExpr(m[2], vars) };
-            return;
-        }
-
-        // String x = "...";
-        m = stmt.match(/^String\s+(\w+)\s*=\s*"([^"]*)"$/);
-        if (m) {
-            vars[m[1]] = { type: 'String', value: m[2] };
-            return;
-        }
-
-        // ─── Asignaciones: x = expr ───
-        m = stmt.match(/^(\w+)\s*=\s*(.+)$/);
-        if (m) {
-            const name = m[1];
-            const expr = m[2].trim();
-
-            // Ternario
-            const ternary = expr.match(/^\((.+)\)\s*\?\s*(.+)\s*:\s*(.+)$/);
-            if (ternary) {
-                const cond = evalBoolExpr(ternary[1], vars);
-                const val  = cond ? evalExpr(ternary[2], vars) : evalExpr(ternary[3], vars);
-                const existingType = vars[name] ? vars[name].type : 'int';
-                vars[name] = { type: existingType, value: existingType === 'int' ? Math.floor(val) : val };
+            // int (declaración simple o múltiple): int a = 12, suma = 0;
+            m = stmt.match(/^int\s+(.+)$/);
+            if (m) {
+                const decls = m[1].split(',').map(s => s.trim());
+                decls.forEach(d => {
+                    const dm = d.match(/^(\w+)\s*=\s*(.+)$/);
+                    if (dm) {
+                        vars[dm[1]] = { type: 'int', value: Math.floor(evalExpr(dm[2], vars)) };
+                    } else {
+                        const nm = d.match(/^(\w+)$/);
+                        if (nm) vars[nm[1]] = { type: 'int', value: 0 };
+                    }
+                });
                 return;
             }
 
-            // Boolean expr
-            if (expr.includes('&&') || expr.includes('||') || expr.includes('.equals(') ||
-                expr === 'true' || expr === 'false') {
-                vars[name] = { type: 'boolean', value: evalBoolExpr(expr, vars) };
+            // double x = expr;
+            m = stmt.match(/^double\s+(\w+)\s*=\s*(.+)$/);
+            if (m) { vars[m[1]] = { type: 'double', value: evalExpr(m[2], vars) }; return; }
+
+            // boolean x = expr;
+            m = stmt.match(/^boolean\s+(\w+)\s*=\s*(.+)$/);
+            if (m) { vars[m[1]] = { type: 'boolean', value: evalBoolExpr(m[2], vars) }; return; }
+
+            // String x = "...";
+            m = stmt.match(/^String\s+(\w+)\s*=\s*"([^"]*)"$/);
+            if (m) { vars[m[1]] = { type: 'String', value: m[2] }; return; }
+
+            // String x;  (sin valor)
+            m = stmt.match(/^String\s+(\w+)$/);
+            if (m) { vars[m[1]] = { type: 'String', value: '' }; return; }
+
+            // x++
+            m = stmt.match(/^(\w+)\+\+$/);
+            if (m) { if (vars[m[1]]) vars[m[1]].value++; return; }
+
+            // x--
+            m = stmt.match(/^(\w+)--$/);
+            if (m) { if (vars[m[1]]) vars[m[1]].value--; return; }
+
+            // Asignación: x = expr
+            m = stmt.match(/^(\w+)\s*=\s*(.+)$/);
+            if (m) {
+                const name = m[1];
+                const expr = m[2].trim();
+
+                // String
+                const strMatch = expr.match(/^"([^"]*)"$/);
+                if (strMatch) {
+                    if (vars[name]) vars[name].value = strMatch[1];
+                    else vars[name] = { type: 'String', value: strMatch[1] };
+                    return;
+                }
+
+                // Ternario
+                const ternary = expr.match(/^\((.+)\)\s*\?\s*(.+)\s*:\s*(.+)$/);
+                if (ternary) {
+                    const cond = evalBoolExpr(ternary[1], vars);
+                    const val  = cond ? evalExpr(ternary[2], vars) : evalExpr(ternary[3], vars);
+                    const t = vars[name] ? vars[name].type : 'int';
+                    vars[name] = { type: t, value: t === 'int' ? Math.floor(val) : val };
+                    return;
+                }
+
+                // Boolean
+                if (expr.includes('&&') || expr.includes('||') || expr.includes('.equals(') ||
+                    expr === 'true' || expr === 'false') {
+                    vars[name] = { type: 'boolean', value: evalBoolExpr(expr, vars) };
+                    return;
+                }
+
+                // Numérica
+                const v = evalExpr(expr, vars);
+                const t = vars[name] ? vars[name].type : (Number.isInteger(v) ? 'int' : 'double');
+                vars[name] = { type: t, value: t === 'int' ? Math.floor(v) : v };
                 return;
             }
-
-            // Numérica
-            const v = evalExpr(expr, vars);
-            const existingType = vars[name] ? vars[name].type : (Number.isInteger(v) ? 'int' : 'double');
-            vars[name] = { type: existingType, value: existingType === 'int' ? Math.floor(v) : v };
-            return;
         }
 
-        // ─── for loop simple ───
-        const forMatch = stmt.match(/^for\s*\(\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*\1\+\+\s*\)\s*\{\s*(.*?)\s*\}$/);
-        if (forMatch) {
-            const loopVar = forMatch[1];
-            const start   = parseInt(forMatch[2]);
-            const end     = parseInt(forMatch[3]);
-            const body    = forMatch[4].trim();
-
-            for (let i = start; i < end; i++) {
-                vars[loopVar] = { type: 'int', value: i };
-                if (body) executeLine(body + ';', vars);
+        // ─── Evaluar argumento de println/print ───
+        function evalPrintArg(arg) {
+            const parts = [];
+            let current = '';
+            let inStr = false;
+            for (let c = 0; c < arg.length; c++) {
+                if (arg[c] === '"') { inStr = !inStr; current += arg[c]; }
+                else if (arg[c] === '+' && !inStr) { parts.push(current.trim()); current = ''; }
+                else { current += arg[c]; }
             }
-            // Limpiar variable del bucle
-            delete vars[loopVar];
-            return;
+            parts.push(current.trim());
+            return parts.map(p => {
+                if (p.startsWith('"') && p.endsWith('"')) return p.slice(1, -1);
+                if (vars[p]) return String(vars[p].value);
+                try { return String(evalExpr(p, vars)); } catch { return p; }
+            }).join('');
         }
 
-        // ─── while loop simple ───
-        const whileMatch = stmt.match(/^while\s*\((.+)\)\s*\{\s*(.*?)\s*\}$/);
-        if (whileMatch) {
-            const cond = whileMatch[1].trim();
-            const body = whileMatch[2].trim();
-            let safety = 0;
-            while (evalBoolExpr(cond, vars) && safety < 1000) {
-                if (body) executeLine(body + ';', vars);
-                safety++;
-            }
-            return;
-        }
-
-        // ─── if / else (simplificado — bloque vacío) ───
-        const ifMatch = stmt.match(/^if\s*\((.+)\)\s*\{\s*\}$/);
-        if (ifMatch) return; // bloque vacío, no hacer nada
-
-        const elseMatch = stmt.match(/^else\s*\{\s*\}$/);
-        if (elseMatch) return;
+        run(0, lines.length - 1);
+        return { vars, errors, output };
     }
 
     function evalExpr(expr, vars) {
@@ -517,8 +613,38 @@ function initConstructor() {
             });
         }
 
+        // ─── Salida por consola ───
+        if (result.output && result.output.length > 0) {
+            const outH = document.createElement('h4');
+            outH.textContent = '💬 Salida por consola:';
+            outH.style.marginTop = '10px';
+            execEl.appendChild(outH);
+
+            const outDiv = document.createElement('div');
+            outDiv.style.background = '#1e293b';
+            outDiv.style.padding = '10px';
+            outDiv.style.borderRadius = '6px';
+            outDiv.style.fontFamily = 'monospace';
+            outDiv.style.color = '#22c55e';
+            outDiv.style.marginBottom = '10px';
+            result.output.forEach(line => {
+                const p = document.createElement('div');
+                p.textContent = '> ' + line;
+                outDiv.appendChild(p);
+            });
+            execEl.appendChild(outDiv);
+        }
+
+        // ─── Variables ───
         const varKeys = Object.keys(result.vars);
-        if (varKeys.length === 0) {
+        if (varKeys.length > 0) {
+            const varH = document.createElement('h4');
+            varH.textContent = '📦 Variables:';
+            varH.style.marginTop = '10px';
+            execEl.appendChild(varH);
+        }
+
+        if (varKeys.length === 0 && (!result.output || result.output.length === 0)) {
             const p = document.createElement('p');
             p.style.color = '#94a3b8';
             p.textContent = 'No se declararon variables.';
@@ -620,7 +746,8 @@ function initConstructor() {
             if (touchSource === 'palette') {
                 const wsBlock = createWorkspaceBlock(
                     touchBlock.dataset.code,
-                    touchBlock.dataset.category
+                    touchBlock.dataset.category,
+                    touchBlock.dataset.display
                 );
                 // Insertar en posición
                 const blocks = [...dropZone.querySelectorAll('.workspace-block')];

@@ -6,13 +6,13 @@
       "icon": "🟦",
       "cssClass": "variables",
       "blocks": [
-        { "code": "int a = 5;" },
-        { "code": "int b = 3;" },
-        { "code": "int c = 10;" },
-        { "code": "int result = 0;" },
-        { "code": "boolean condition = true;" },
-        { "code": "double price = 9.99;" },
-        { "code": "String name = \"Ana\";" }
+        { "display": "String texto", "code": "String texto;" },
+        { "display": "int numero", "code": "int numero;" },
+        { "display": "int resultado", "code": "int resultado;" },
+        { "display": "int contador = 0", "code": "int contador = 0;" },
+        { "display": "int edad = 19", "code": "int edad = 19;" },
+        { "display": "int a = 0", "code": "int a = 0;" },
+        { "display": "int suma = 0", "code": "int suma = 0;" }
       ]
     },
     {
@@ -21,14 +21,12 @@
       "icon": "🟪",
       "cssClass": "operations",
       "blocks": [
-        { "code": "result = a + b;" },
-        { "code": "result = a - b;" },
-        { "code": "result = a * b;" },
-        { "code": "result = a / b;" },
-        { "code": "result = result + 1;" },
-        { "code": "result = result - 2;" },
-        { "code": "result = a % b;" },
-        { "code": "double total = price * 3;" }
+        { "display": "texto = \"Hola mundo\"", "code": "texto = \"Hola Mundo\";" },
+        { "display": "numero = 3", "code": "numero = 3;" },
+        { "display": "resultado = 3 + 5", "code": "resultado = 3 + 5;" },
+        { "display": "contador = contador + 1", "code": "contador++;" },
+        { "display": "suma = suma + a", "code": "suma = suma + a;" },
+        { "display": "i = i + 1", "code": "i = i + 1;" }
       ]
     },
     {
@@ -37,11 +35,10 @@
       "icon": "🟨",
       "cssClass": "conditions",
       "blocks": [
-        { "code": "if (result > 10) { }", "type": "container" },
-        { "code": "if (a > b) { }", "type": "container" },
-        { "code": "else { }", "type": "container" },
-        { "code": "if (condition) { }", "type": "container" },
-        { "code": "if (total > 20) { }", "type": "container" }
+        { "display": "if (a > 10)", "code": "if (a > 10) {" },
+        { "display": "if (i > 5)", "code": "if (i > 5) {" },
+        { "display": "if (edad > 18)", "code": "if (edad > 18) {" },
+        { "display": "else", "code": "} else {" }
       ]
     },
     {
@@ -50,31 +47,30 @@
       "icon": "🟧",
       "cssClass": "loops",
       "blocks": [
-        { "code": "for (int i = 0; i < 5; i++) { }", "type": "container" },
-        { "code": "while (result < 20) { }", "type": "container" },
-        { "code": "for (int i = 0; i < 10; i++) { result = result + i; }" }
+        { "display": "repetir", "code": "do{" },
+        { "display": "mientras (a<11) ", "code": "}while(a<11);" },
+        { "display": "mientras (i < 11)", "code": "}while(i<11);"},
+        { "display": "mientras (contador < 11)", "code": "}while(contador<11);"},
+        { "display": "mientras (a < 6)", "code": "}while(a < 6);"}
       ]
     },
     {
-      "id": "logical",
-      "name": "Operadores lógicos",
+      "id": "output",
+      "name": "Mostrar",
       "icon": "🟩",
       "cssClass": "logical",
       "blocks": [
-        { "code": "condition = (a > b) && (result < 10);" },
-        { "code": "condition = (name.equals(\"Ana\")) || (b > 5);" },
-        { "code": "result = (a > b) ? a : b;" }
-      ]
-    },
-    {
-      "id": "assignment",
-      "name": "Asignación a nuevas variables",
-      "icon": "🟦",
-      "cssClass": "assignment",
-      "blocks": [
-        { "code": "int sum = a + b;" },
-        { "code": "double average = (a + b + c) / 3;" },
-        { "code": "boolean check = (result > 0);" }
+        { "display": "println(texto)", "code": "System.out.println(texto);" },
+        { "display": "println(numero)", "code": "System.out.println(numero);" },
+        { "display": "println(resultado)", "code": "System.out.println(resultado);" },
+        { "display": "println(contador)", "code": "System.out.println(contador);" },
+        { "display": "println(\"Hola\")", "code": "System.out.print(\"Hola.\");" },
+        { "display": "println(a)", "code": "System.out.println(a);" },
+        { "display": "println(\"es mayor que 10\")", "code": "System.out.println(\"es mayor que 10\");" },
+        { "display": "println(suma)", "code": "System.out.println(suma);" },
+        { "display": "println(\"mayor de edad\")", "code": "System.out.println(\"Eres mayor de edad\");" },
+        { "display": "println(\"menor de edad\")", "code": "System.out.println(\"Eres menor de edad\");" },
+        { "display": "print(\"Del 1 al 10 hay \" + contador + \" mayores que 5\")", "code": "System.out.println(\"Del 1 al 10 hay \" + contador + \" numeros mayores que 5\");" }
       ]
     }
   ]
