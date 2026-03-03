@@ -25,12 +25,8 @@
         { "display": "numero = 3", "code": "numero = 3;" },
         { "display": "resultado = 3 + 5", "code": "resultado = 3 + 5;" },
         { "display": "contador = contador + 1", "code": "contador++;" },
-<<<<<<< HEAD
         { "display": "suma = suma + a", "code": "suma = suma + a;" },
         { "display": "i = i + 1", "code": "i = i + 1;" }
-=======
-        { "display": "suma = suma + a", "code": "suma = suma + a;" }
->>>>>>> 0da8f2530e51c186d0fd76d53e72f91db45fa37f
       ]
     },
     {
@@ -53,17 +49,9 @@
       "blocks": [
         { "display": "repetir", "code": "do{" },
         { "display": "mientras (a<11) ", "code": "}while(a<11);" },
-<<<<<<< HEAD
         { "display": "mientras (i < 11)", "code": "}while(i<11);"},
         { "display": "mientras (contador < 11)", "code": "}while(contador<11);"},
         { "display": "mientras (a < 6)", "code": "}while(a < 6);"}
-=======
-        { "display": ""},
-        
-        { "display": "repetir (i = i + 1) mientras (i < 11)", "code": "for (int i = 1; i <= 10; i++) {" },
-        { "display": "repetir (a = a + 1) mientras (a < 11)", "code": "for (a = 1; a <= 10; a++) {" },
-        { "display": "repetir (contador + 1) mientras (contador < 11)", "code": "while (contador < 11) {" }
->>>>>>> 0da8f2530e51c186d0fd76d53e72f91db45fa37f
       ]
     },
     {
