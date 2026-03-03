@@ -4,105 +4,74 @@
       "id": "variables",
       "name": "Variables",
       "icon": "🟦",
+      "cssClass": "variables",
       "blocks": [
-        {
-          "code": "String texto\ntexto = \"Hola mundo\"",
-          "javaCode": "String texto = \"Hola mundo\";"
-        },
-        {
-          "code": "int i = 0",
-          "javaCode": "int i = 0;"
-        },
-        {
-          "code": "int contador = 0",
-          "javaCode": "int contador = 0;"
-        },
-        {
-          "code": "int edad = 19",
-          "javaCode": "int edad = 19;"
-        },
-        {
-          "code": "int numero",
-          "javaCode": "int numero;"
-        },
-        {
-          "code": "int resultado",
-          "javaCode": "int resultado;"
-        }
+        { "display": "String texto", "code": "String texto;" },
+        { "display": "int numero", "code": "int numero;" },
+        { "display": "int resultado", "code": "int resultado;" },
+        { "display": "int contador = 0", "code": "int contador = 0;" },
+        { "display": "int edad = 19", "code": "int edad = 19;" },
+        { "display": "int a = 0", "code": "int a = 0;" },
+        { "display": "int suma = 0", "code": "int suma = 0;" }
       ]
     },
     {
       "id": "operations",
       "name": "Operaciones",
       "icon": "🟪",
+      "cssClass": "operations",
       "blocks": [
-        {
-          "code": "i = i + 1",
-          "javaCode": "i = i + 1;"
-        },
-        {
-          "code": "contador = contador + 1",
-          "javaCode": "contador = contador + 1;"
-        },
-        {
-          "code": "suma = suma + a",
-          "javaCode": "suma = suma + a;"
-        },
-        {
-          "code": "resultado = 3 + 5",
-          "javaCode": "resultado = 3 + 5;"
-        }
+        { "display": "texto = \"Hola mundo\"", "code": "texto = \"Hola Mundo\";" },
+        { "display": "numero = 3", "code": "numero = 3;" },
+        { "display": "resultado = 3 + 5", "code": "resultado = 3 + 5;" },
+        { "display": "contador = contador + 1", "code": "contador++;" },
+        { "display": "suma = suma + a", "code": "suma = suma + a;" }
       ]
     },
     {
       "id": "conditions",
       "name": "Condiciones",
       "icon": "🟨",
+      "cssClass": "conditions",
       "blocks": [
-        {
-          "code": "if (edad > 18)\nprintln(\"mayor de edad\")",
-          "javaCode": "if (edad > 18) { System.out.println(\"mayor de edad\"); }",
-          "type": "container"
-        },
-        {
-          "code": "else\nprintln(\"menor de edad\")",
-          "javaCode": "else { System.out.println(\"menor de edad\"); }",
-          "type": "container"
-        },
-        {
-          "code": "if (i > 5)\ncontador = contador + 1",
-          "javaCode": "if (i > 5) { contador = contador + 1; }",
-          "type": "container"
-        }
+        { "display": "if (a > 10)", "code": "if (a > 10) {" },
+        { "display": "if (i > 5)", "code": "if (i > 5) {" },
+        { "display": "if (edad > 18)", "code": "if (edad > 18) {" },
+        { "display": "else", "code": "} else {" }
       ]
     },
     {
       "id": "loops",
       "name": "Bucles",
       "icon": "🟧",
+      "cssClass": "loops",
       "blocks": [
-        {
-          "code": "repetir",
-          "javaCode": "do{",
-          "type": "container"
-        },
-
-        {
-          "code": "mientras a < 6",
-          "javaCode": "}while (a<6);",
-          "type": "container"
-        },
-
-        {
-          "code": "repetir (a = a + 1)\nmientras (a < 6)\nprintln(\"Hola\")",
-          "javaCode": "do { a = a + 1; System.out.println(\"Hola\"); } while (a < 6);",
-          "type": "container"
-        },
-        {
-          "code": "repetir (contador = contador + 1)\nmientras (contador < 11)\nprintln(contador)",
-          "javaCode": "do { contador = contador + 1; System.out.println(contador); } while (contador < 11);",
-          "type": "container"
-        }
+        { "display": "repetir", "code": "do{" },
+        { "display": "mientras (a<11) ", "code": "}while(a<11);" },
+        { "display": ""},
+        
+        { "display": "repetir (i = i + 1) mientras (i < 11)", "code": "for (int i = 1; i <= 10; i++) {" },
+        { "display": "repetir (a = a + 1) mientras (a < 11)", "code": "for (a = 1; a <= 10; a++) {" },
+        { "display": "repetir (contador + 1) mientras (contador < 11)", "code": "while (contador < 11) {" }
+      ]
+    },
+    {
+      "id": "output",
+      "name": "Mostrar",
+      "icon": "🟩",
+      "cssClass": "logical",
+      "blocks": [
+        { "display": "println(texto)", "code": "System.out.println(texto);" },
+        { "display": "println(numero)", "code": "System.out.println(numero);" },
+        { "display": "println(resultado)", "code": "System.out.println(resultado);" },
+        { "display": "println(contador)", "code": "System.out.println(contador);" },
+        { "display": "println(\"Hola\")", "code": "System.out.print(\"Hola.\");" },
+        { "display": "println(a)", "code": "System.out.println(a);" },
+        { "display": "println(\"es mayor que 10\")", "code": "System.out.println(\"es mayor que 10\");" },
+        { "display": "println(suma)", "code": "System.out.println(suma);" },
+        { "display": "println(\"mayor de edad\")", "code": "System.out.println(\"Eres mayor de edad\");" },
+        { "display": "println(\"menor de edad\")", "code": "System.out.println(\"Eres menor de edad\");" },
+        { "display": "print(\"Del 1 al 10 hay \" + contador + \" mayores que 5\")", "code": "System.out.println(\"Del 1 al 10 hay \" + contador + \" numeros mayores que 5\");" }
       ]
     }
   ]
