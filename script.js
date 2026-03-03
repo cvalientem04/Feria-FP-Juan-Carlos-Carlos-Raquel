@@ -192,6 +192,22 @@ function initConstructor() {
         span.textContent = display || code;
         div.appendChild(span);
 
+        // Botón de sangría (indent)
+        let indentLevel = 0;
+        const indentBtn = document.createElement('button');
+        indentBtn.className = 'indent-btn';
+        indentBtn.textContent = '→';
+        indentBtn.title = 'Añadir sangría';
+        indentBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            indentLevel++;
+            if (indentLevel > 3) indentLevel = 0;
+            div.dataset.indent = indentLevel;
+            div.style.marginLeft = (indentLevel * 30) + 'px';
+            div.style.width = indentLevel > 0 ? 'calc(100% - ' + (indentLevel * 30) + 'px)' : '';
+        });
+        div.appendChild(indentBtn);
+
         const btn = document.createElement('button');
         btn.className = 'delete-btn';
         btn.textContent = '✕';

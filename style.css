@@ -266,6 +266,28 @@ header {
     text-overflow: ellipsis;
 }
 
+.workspace-block .indent-btn {
+    background: rgba(255,255,255,0.3);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.workspace-block .indent-btn:hover {
+    background: rgba(255,255,255,0.5);
+    transform: scale(1.1);
+}
+
 .workspace-block .delete-btn {
     background: rgba(255,255,255,0.3);
     border: none;
