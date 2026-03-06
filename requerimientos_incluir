@@ -1,0 +1,163 @@
+//Codigo a incorporar:
+
+/**
+ * Catálogo de algoritmos extraídos de ejemplose.java
+ * Clasificados por dificultad para el cálculo del podium.
+ */
+const CATALOGO_ALGORITMOS = [
+    // --- DIFICULTAD FÁCIL (Factor 1.0) ---
+    { 
+        id: 1, 
+        dificultad: "fácil", 
+        factor: 1, 
+        enunciado: "Definir un String y mostrar 'Hola Mundo' por pantalla." 
+    },
+    { 
+        id: 2, 
+        dificultad: "fácil", 
+        factor: 1, 
+        enunciado: "Definir una variable entera, asignarle el valor 3 y mostrarla." 
+    },
+    { 
+        id: 3, 
+        dificultad: "fácil", 
+        factor: 1, 
+        enunciado: "Calcular la suma de dos números constantes (3 + 5) y mostrar el resultado." 
+    },
+
+    // --- DIFICULTAD MEDIO (Factor 0.66) ---
+    { 
+        id: 4, 
+        dificultad: "medio", 
+        factor: 0.66, 
+        enunciado: "Bucle for para imprimir la palabra 'Hola.' cinco veces." 
+    },
+    { 
+        id: 5, 
+        dificultad: "medio", 
+        factor: 0.66, 
+        enunciado: "Bucle while para contar e imprimir números del 1 al 10." 
+    },
+    { 
+        id: 6, 
+        dificultad: "medio", 
+        factor: 0.66, 
+        enunciado: "Condicional para verificar si un número es > 10 y sumatorio de los números del 1 al 10." 
+    },
+
+    // --- DIFICULTAD DIFÍCIL (Factor 0.33) ---
+    { 
+        id: 7, 
+        dificultad: "difícil", 
+        factor: 0.33, 
+        enunciado: "Algoritmo de ordenación o lógica compleja (Ejercicio no definido explícitamente en el Java, reservado para expansión)." 
+    },
+    { 
+        id: 8, 
+        dificultad: "difícil", 
+        factor: 0.33, 
+        enunciado: "Contar y mostrar cuántos números son superiores a 5 entre los 10 primeros números naturales." 
+    },
+    { 
+        id: 9, 
+        dificultad: "difícil", 
+        factor: 0.33, 
+        enunciado: "Estructura condicional para determinar si una persona es mayor o menor de edad según su edad." 
+    }
+];
+
+
+El enunciado del algoritmo seleccionado se mostrará en la pantalla principal para que el usuario pueda verlo continuamente
+
+
+function obtenerPuntosFinales(idEjercicio, segundos) {
+    const ej = CATALOGO_ALGORITMOS.find(item => item.id === idEjercicio);
+    
+    if (!ej) return 0;
+
+    // Fórmula: 240 - (Segundos * Factor)
+    let calculo = 240 - (segundos * ej.factor);
+    
+    // Retornamos el valor redondeado y nos aseguramos de que no sea negativo
+    return Math.max(0, Math.round(calculo));
+}
+
+// Ejemplo: Si el usuario hace el ej 8 (difícil) en 20 segundos:
+// let puntos = obtenerPuntosFinales(8, 20); // Resultado: 233
+
+
+//Aniadir un reloj a la página principal a modo de temporizador 
+<div id="seccion-cronometro" style="text-align: center; padding: 20px; border: 2px solid #333; border-radius: 10px;">
+    <h2 id="display-tiempo">00:00</h2>
+    <p id="info-ejercicio">Selecciona un ejercicio para empezar</p>
+    
+    <button id="btn-control" onclick="gestionarCronometro()" style="padding: 10px 20px; cursor: pointer;">
+        EMPEZAR CHALLENGE
+    </button>
+
+    <div id="resultado-final" style="margin-top: 15px; font-weight: bold; color: #2c3e50;"></div>
+</div>
+
+// Lógica JavaScript (Cronómetro + Puntos)
+//Este código maneja el tiempo y utiliza el array CATALOGO_ALGORITMOS que definimos antes.
+
+let tiempoInicio;
+let intervalo;
+let funcionando = false;
+let segundosTranscurridos = 0;
+
+// Supongamos que esta variable cambia cuando el usuario elige un ejercicio (1-9)
+let idEjercicioActivo = 1; 
+
+function gestionarCronometro() {
+    const btn = document.getElementById('btn-control');
+    const display = document.getElementById('display-tiempo');
+    const resultado = document.getElementById('resultado-final');
+
+    if (!funcionando) {
+        // --- INICIAR ---
+        funcionando = true;
+        btn.innerText = "PARAR Y CALCULAR PUNTOS";
+        btn.style.backgroundColor = "#ff4d4d";
+        segundosTranscurridos = 0;
+        resultado.innerText = "";
+
+        intervalo = setInterval(() => {
+            segundosTranscurridos++;
+            display.innerText = formatearTiempo(segundosTranscurridos);
+        }, 1000);
+
+    } else {
+        // --- PARAR ---
+        funcionando = false;
+        clearInterval(intervalo);
+        btn.innerText = "REINTENTAR";
+        btn.style.backgroundColor = "#4CAF50";
+
+        // Calcular puntos usando tu fórmula
+        const puntos = obtenerPuntosFinales(idEjercicioActivo, segundosTranscurridos);
+        const datosEj = CATALOGO_ALGORITMOS.find(e => e.id === idEjercicioActivo);
+
+        resultado.innerHTML = `
+            <p>¡Reto Terminado!</p>
+            <p>Ejercicio: ${datosEj.enunciado}</p>
+            <p>Puntos obtenidos: <span style="font-size: 1.5em;">${puntos}</span></p>
+        `;
+    }
+}
+
+function formatearTiempo(segundos) {
+    const mins = Math.floor(segundos / 60);
+    const secs = segundos % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Reutilizamos la función de puntos que definimos antes
+function obtenerPuntosFinales(idEjercicio, segundos) {
+    const ej = CATALOGO_ALGORITMOS.find(item => item.id === idEjercicio);
+    if (!ej) return 0;
+
+    // Tu fórmula: 240 - (Segundos * Factor)
+    let calculo = 240 - (segundos * ej.factor);
+    return Math.max(0, Math.round(calculo));
+}
