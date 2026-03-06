@@ -16,6 +16,13 @@ const CATALOGO_ALGORITMOS = [
     { id: 9, dificultad: "difícil", factor: 0.33, enunciado: "Condicional para determinar si una persona es mayor de edad." }
 ];
 
+function obtenerPuntosFinales(idEjercicio, segundos) {
+    const ej = CATALOGO_ALGORITMOS.find(item => item.id === idEjercicio);
+    if (!ej) return 0;
+    let calculo = 240 - (segundos * ej.factor);
+    return Math.max(0, Math.round(calculo));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Detectar página actual ───
@@ -978,6 +985,7 @@ function initConstructor() {
                         btnControl.innerText = 'REINTENTAR';
                         displayTiempo.innerText = '00:00';
                         musicaCompeticion.pause();
+                        mostrarResultadoFinal();
                     }
                 }, 1000);
             } else {
@@ -986,7 +994,19 @@ function initConstructor() {
                 segundosGuardados = segundosTranscurridos;
                 btnControl.innerText = 'REINTENTAR';
                 musicaCompeticion.pause();
+                mostrarResultadoFinal();
             }
+        }
+
+        function mostrarResultadoFinal() {
+            const resultado = document.getElementById('resultado-final');
+            const puntos = obtenerPuntosFinales(idEjercicioActivo, segundosTranscurridos);
+            const datosEj = CATALOGO_ALGORITMOS.find(e => e.id === idEjercicioActivo);
+            resultado.innerHTML = `
+                <p>¡Reto Terminado!</p>
+                <p>Ejercicio: ${datosEj.enunciado}</p>
+                <p>Puntos obtenidos: <span style="font-size: 1.5em;">${puntos}</span></p>
+            `;
         }
 
         function formatearTiempo(segundos) {
