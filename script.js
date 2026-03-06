@@ -944,6 +944,12 @@ function initConstructor() {
 
         const TIEMPO_LIMITE = 240; // 4 minutos en segundos
 
+        // ─── Música épica de competición (sin API key) ───
+        const musicaCompeticion = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+        musicaCompeticion.loop = true;
+        musicaCompeticion.volume = 0.5;
+        musicaCompeticion.preload = 'auto';
+
         const btnControl  = document.getElementById('btn-control');
         const displayTiempo = document.getElementById('display-tiempo');
         const infoEjercicio = document.getElementById('info-ejercicio');
@@ -956,6 +962,11 @@ function initConstructor() {
                 btnControl.innerText = 'PARAR';
                 segundosTranscurridos = 0;
                 displayTiempo.innerText = formatearTiempo(TIEMPO_LIMITE);
+                
+                // Reproducir música épica
+                musicaCompeticion.currentTime = 0;
+                musicaCompeticion.play().catch(() => {});
+                
                 intervalo = setInterval(() => {
                     segundosTranscurridos++;
                     const restante = TIEMPO_LIMITE - segundosTranscurridos;
@@ -966,6 +977,7 @@ function initConstructor() {
                         segundosGuardados = segundosTranscurridos;
                         btnControl.innerText = 'REINTENTAR';
                         displayTiempo.innerText = '00:00';
+                        musicaCompeticion.pause();
                     }
                 }, 1000);
             } else {
@@ -973,6 +985,7 @@ function initConstructor() {
                 clearInterval(intervalo);
                 segundosGuardados = segundosTranscurridos;
                 btnControl.innerText = 'REINTENTAR';
+                musicaCompeticion.pause();
             }
         }
 
