@@ -189,6 +189,177 @@ header {
     position: relative;
 }
 
+/* ================= PANEL EJERCICIOS ================= */
+.ejercicios-panel {
+    width: 300px;
+    min-width: 250px;
+    background: #ffffff;
+    overflow-y: auto;
+    padding: 15px;
+    border-left: 2px solid #e2e8f0;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+}
+
+/* ─── Cronómetro ─── */
+#seccion-cronometro {
+    text-align: center;
+    background: #1e293b;
+    border-radius: 14px;
+    padding: 18px 12px;
+    margin-bottom: 18px;
+}
+
+#display-tiempo {
+    font-size: 2.2rem;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: #22c55e;
+    margin: 0 0 6px 0;
+    letter-spacing: 2px;
+}
+
+#info-ejercicio {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin: 0 0 12px 0;
+}
+
+#btn-control {
+    background: #4c97ff;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 1px;
+}
+
+#btn-control:hover {
+    background: #3b82f6;
+    transform: scale(1.05);
+}
+
+.ejercicios-panel h2 {
+    margin-bottom: 15px;
+    color: #334155;
+    font-size: 1.1rem;
+}
+
+.ejercicios-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ejercicio-item {
+    padding: 12px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+}
+
+.ejercicio-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.ejercicio-item.dif-facil    { background: #59c059; }
+.ejercicio-item.dif-medio    { background: #ffbf00; color: #333; }
+.ejercicio-item.dif-dificil  { background: #ff6b6b; }
+
+.ejercicio-item .ej-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    font-weight: 400;
+}
+
+.ejercicio-detail {
+    animation: slideIn 0.2s ease;
+}
+
+.ejercicio-back-btn {
+    background: #4c97ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    transition: background 0.2s;
+}
+
+.ejercicio-back-btn:hover {
+    background: #3b82f6;
+}
+
+.ejercicio-detail-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+}
+
+.ejercicio-detail-card h3 {
+    margin: 0 0 8px 0;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+.ejercicio-detail-card .ej-dificultad {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.ejercicio-detail-card .ej-dificultad.dif-facil   { background: #59c059; }
+.ejercicio-detail-card .ej-dificultad.dif-medio   { background: #ffbf00; color: #333; }
+.ejercicio-detail-card .ej-dificultad.dif-dificil { background: #ff6b6b; }
+
+.ejercicio-detail-card .ej-enunciado {
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.ejercicio-detail-card .ej-pistas h4 {
+    font-size: 0.85rem;
+    color: #334155;
+    margin: 0 0 8px 0;
+}
+
+.ejercicio-detail-card .ej-pistas .pista-bloque {
+    display: block;
+    padding: 5px 10px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: white;
+}
+
+.pista-bloque.cat-variables   { background: #4c97ff; }
+.pista-bloque.cat-operations  { background: #9966ff; }
+.pista-bloque.cat-conditions  { background: #ffbf00; color: #333; }
+.pista-bloque.cat-loops       { background: #ff8c1a; }
+.pista-bloque.cat-logical     { background: #59c059; }
+
 .workspace h2 {
     margin-bottom: 5px;
     color: #334155;
@@ -487,6 +658,13 @@ header {
 
     .workspace {
         min-height: 50vh;
+    }
+
+    .ejercicios-panel {
+        width: 100%;
+        max-height: 40vh;
+        border-left: none;
+        border-top: 2px solid #e2e8f0;
     }
 
     header h1 {

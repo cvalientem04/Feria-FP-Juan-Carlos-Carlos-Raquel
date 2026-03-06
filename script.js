@@ -2,6 +2,20 @@
    SCRIPT.JS — Constructor Visual Java + Registro
    ============================================= */
 
+let segundosGuardados = 0; // Variable global: segundos del último intento
+
+const CATALOGO_ALGORITMOS = [
+    { id: 1, dificultad: "fácil",  factor: 1,    enunciado: "Definir un String y mostrar 'Hola Mundo'." },
+    { id: 2, dificultad: "fácil",  factor: 1,    enunciado: "Definir una variable entera, asignarle 3 y mostrarla." },
+    { id: 3, dificultad: "fácil",  factor: 1,    enunciado: "Calcular la suma de 3 + 5 y mostrar resultado." },
+    { id: 4, dificultad: "medio",  factor: 0.66, enunciado: "Bucle for para imprimir 'Hola.' 5 veces." },
+    { id: 5, dificultad: "medio",  factor: 0.66, enunciado: "Bucle while para contar e imprimir del 1 al 10." },
+    { id: 6, dificultad: "medio",  factor: 0.66, enunciado: "Condicional para verificar si número > 10 y sumatorio 1-10." },
+    { id: 7, dificultad: "difícil", factor: 0.33, enunciado: "Algoritmo de ordenación o lógica compleja." },
+    { id: 8, dificultad: "difícil", factor: 0.33, enunciado: "Contar cuántos números > 5 entre los 10 primeros naturales." },
+    { id: 9, dificultad: "difícil", factor: 0.33, enunciado: "Condicional para determinar si una persona es mayor de edad." }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Detectar página actual ───
@@ -26,6 +40,14 @@ function initConstructor() {
     const clearBtn  = document.getElementById('clearBtn');
     const outputEl  = document.getElementById('outputCode');
     const execEl    = document.getElementById('executionResult');
+
+    // ─── Panel de ejercicios ───
+    const ejerciciosList  = document.getElementById('ejerciciosList');
+    const ejercicioDetail = document.getElementById('ejercicioDetail');
+    const ejercicioContent = document.getElementById('ejercicioContent');
+    const ejercicioBackBtn = document.getElementById('ejercicioBackBtn');
+
+    if (ejerciciosList) initEjercicios();
 
     let draggedBlock   = null;   // elemento que se arrastra
     let dragSource     = null;   // 'palette' | 'workspace'
@@ -770,6 +792,196 @@ function initConstructor() {
         execEl.classList.remove('visible');
         updateCounter();
     });
+
+    // ─── Panel de Ejercicios ───
+    function initEjercicios() {
+
+        const EJERCICIOS_DETALLE = {
+            1: {
+                titulo: "Ejercicio 1 — Hola Mundo",
+                descripcion: "Define una variable de tipo String, asígnale el valor \"Hola Mundo\" y muéstrala por consola.",
+                bloques: [
+                    { texto: "String texto", cat: "variables" },
+                    { texto: "texto = \"Hola mundo\"", cat: "operations" },
+                    { texto: "println(texto)", cat: "logical" }
+                ]
+            },
+            2: {
+                titulo: "Ejercicio 2 — Variable entera",
+                descripcion: "Declara una variable entera, asígnale el valor 3 y muéstrala por consola.",
+                bloques: [
+                    { texto: "int numero", cat: "variables" },
+                    { texto: "numero = 3", cat: "operations" },
+                    { texto: "println(numero)", cat: "logical" }
+                ]
+            },
+            3: {
+                titulo: "Ejercicio 3 — Suma",
+                descripcion: "Declara una variable 'resultado', calcula la suma de 3 + 5 y muestra el resultado.",
+                bloques: [
+                    { texto: "int resultado", cat: "variables" },
+                    { texto: "resultado = 3 + 5", cat: "operations" },
+                    { texto: "println(resultado)", cat: "logical" }
+                ]
+            },
+            4: {
+                titulo: "Ejercicio 4 — Hola 5 veces",
+                descripcion: "Usa un bucle do-while para imprimir 'Hola.' 5 veces. Necesitas un contador que vaya de 0 a 5.",
+                bloques: [
+                    { texto: "int a = 0", cat: "variables" },
+                    { texto: "repetir", cat: "loops" },
+                    { texto: "println(\"Hola\")", cat: "logical" },
+                    { texto: "a = a + 1  (usar sangría)", cat: "operations" },
+                    { texto: "mientras (a < 6)", cat: "loops" }
+                ]
+            },
+            5: {
+                titulo: "Ejercicio 5 — Contar del 1 al 10",
+                descripcion: "Usa un bucle do-while para contar del 1 al 10 e imprimir cada número por consola.",
+                bloques: [
+                    { texto: "int contador = 0", cat: "variables" },
+                    { texto: "repetir", cat: "loops" },
+                    { texto: "contador = contador + 1  (usar sangría)", cat: "operations" },
+                    { texto: "println(contador)  (usar sangría)", cat: "logical" },
+                    { texto: "mientras (contador < 11)", cat: "loops" }
+                ]
+            },
+            6: {
+                titulo: "Ejercicio 6 — Condicional y sumatorio",
+                descripcion: "Comprueba si 'a' es mayor que 10. Si lo es, muéstralo. Luego calcula el sumatorio del 1 al 10.",
+                bloques: [
+                    { texto: "int a = 0, int suma = 0", cat: "variables" },
+                    { texto: "if (a > 10)", cat: "conditions" },
+                    { texto: "println(a) + println(\"es mayor que 10\")", cat: "logical" },
+                    { texto: "repetir → suma = suma + a + a = a + 1", cat: "loops" },
+                    { texto: "mientras (a < 11)", cat: "loops" },
+                    { texto: "println(suma)", cat: "logical" }
+                ]
+            },
+            7: {
+                titulo: "Ejercicio 7 — Lógica compleja",
+                descripcion: "Ejercicio de lógica avanzada. ¡Piensa bien tu algoritmo!",
+                bloques: [
+                    { texto: "Usa los bloques que necesites", cat: "variables" }
+                ]
+            },
+            8: {
+                titulo: "Ejercicio 8 — Mayores que 5",
+                descripcion: "Cuenta cuántos números son mayores que 5 entre los 10 primeros números naturales (1-10).",
+                bloques: [
+                    { texto: "int contador = 0, int i = 1", cat: "variables" },
+                    { texto: "repetir", cat: "loops" },
+                    { texto: "if (i > 5)  (usar sangría)", cat: "conditions" },
+                    { texto: "contador = contador + 1  (usar sangría x2)", cat: "operations" },
+                    { texto: "i = i + 1  (usar sangría)", cat: "operations" },
+                    { texto: "mientras (i < 11)", cat: "loops" },
+                    { texto: "print(\"Del 1 al 10 hay...\")", cat: "logical" }
+                ]
+            },
+            9: {
+                titulo: "Ejercicio 9 — Mayor de edad",
+                descripcion: "Dada una edad, determina si la persona es mayor o menor de edad usando un if-else.",
+                bloques: [
+                    { texto: "int edad = 19", cat: "variables" },
+                    { texto: "if (edad > 18)", cat: "conditions" },
+                    { texto: "println(\"mayor de edad\")  (usar sangría)", cat: "logical" },
+                    { texto: "else", cat: "conditions" },
+                    { texto: "println(\"menor de edad\")  (usar sangría)", cat: "logical" }
+                ]
+            }
+        };
+
+        // Renderizar lista de ejercicios
+        CATALOGO_ALGORITMOS.forEach(ej => {
+            const item = document.createElement('div');
+            const difClass = ej.dificultad === 'fácil' ? 'dif-facil' : ej.dificultad === 'medio' ? 'dif-medio' : 'dif-dificil';
+            item.className = 'ejercicio-item ' + difClass;
+            item.innerHTML = `Ejercicio ${ej.id} <span class="ej-badge">${ej.dificultad}</span>`;
+            item.addEventListener('click', () => showDetail(ej));
+            ejerciciosList.appendChild(item);
+        });
+
+        // Mostrar detalle de un ejercicio
+        function showDetail(ej) {
+            ejerciciosList.style.display = 'none';
+            ejercicioDetail.style.display = 'block';
+
+            const detail = EJERCICIOS_DETALLE[ej.id];
+            const difClass = ej.dificultad === 'fácil' ? 'dif-facil' : ej.dificultad === 'medio' ? 'dif-medio' : 'dif-dificil';
+
+            let bloquesHTML = '';
+            /*
+            if (detail && detail.bloques) {
+                bloquesHTML = '<div class="ej-pistas"><h4>📦 Bloques necesarios (en orden):</h4>';
+                detail.bloques.forEach(b => {
+                    bloquesHTML += `<span class="pista-bloque cat-${b.cat}">${b.texto}</span>`;
+                });
+                bloquesHTML += '</div>';
+            }
+            */
+
+            ejercicioContent.innerHTML = `
+                <div class="ejercicio-detail-card">
+                    <h3>${detail ? detail.titulo : 'Ejercicio ' + ej.id}</h3>
+                    <span class="ej-dificultad ${difClass}">${ej.dificultad}</span>
+                    <p class="ej-enunciado">${detail ? detail.descripcion : ej.enunciado}</p>
+                    ${bloquesHTML}
+                </div>`;
+        }
+
+        // Botón volver
+        ejercicioBackBtn.addEventListener('click', () => {
+            ejercicioDetail.style.display = 'none';
+            ejerciciosList.style.display = 'flex';
+        });
+
+        // ─── Cronómetro ───
+        let tiempoInicio;
+        let intervalo;
+        let funcionando = false;
+        let segundosTranscurridos = 0;
+        let idEjercicioActivo = 1;
+
+        const TIEMPO_LIMITE = 240; // 4 minutos en segundos
+
+        const btnControl  = document.getElementById('btn-control');
+        const displayTiempo = document.getElementById('display-tiempo');
+        const infoEjercicio = document.getElementById('info-ejercicio');
+
+        btnControl.addEventListener('click', gestionarCronometro);
+
+        function gestionarCronometro() {
+            if (!funcionando) {
+                funcionando = true;
+                btnControl.innerText = 'PARAR';
+                segundosTranscurridos = 0;
+                displayTiempo.innerText = formatearTiempo(TIEMPO_LIMITE);
+                intervalo = setInterval(() => {
+                    segundosTranscurridos++;
+                    const restante = TIEMPO_LIMITE - segundosTranscurridos;
+                    displayTiempo.innerText = formatearTiempo(Math.max(0, restante));
+                    if (restante <= 0) {
+                        funcionando = false;
+                        clearInterval(intervalo);
+                        segundosGuardados = segundosTranscurridos;
+                        btnControl.innerText = 'REINTENTAR';
+                        displayTiempo.innerText = '00:00';
+                    }
+                }, 1000);
+            } else {
+                funcionando = false;
+                clearInterval(intervalo);
+                segundosGuardados = segundosTranscurridos;
+                btnControl.innerText = 'REINTENTAR';
+            }
+        }
+
+        function formatearTiempo(segundos) {
+            const mins = Math.floor(segundos / 60);
+            const secs = segundos % 60;
+            return `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        }
+    }
 
     // ─── Touch support (móviles) ───
     let touchClone  = null;

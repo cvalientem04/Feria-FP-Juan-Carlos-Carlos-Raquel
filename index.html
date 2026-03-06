@@ -36,6 +36,23 @@
         </div>
     </main>
 
+    <!-- ================= PANEL EJERCICIOS ================= -->
+    <aside class="ejercicios-panel" id="ejerciciosPanel">
+        <div id="seccion-cronometro">
+            <h2 id="display-tiempo">00:00</h2>
+            <p id="info-ejercicio">Selecciona un ejercicio para empezar</p>
+            <button id="btn-control">EMPEZAR CHALLENGE</button>
+        </div>
+        <h2>📝 Ejercicios</h2>
+        <div id="ejerciciosList" class="ejercicios-list">
+            <!-- Se genera dinámicamente -->
+        </div>
+        <div id="ejercicioDetail" class="ejercicio-detail" style="display:none;">
+            <button id="ejercicioBackBtn" class="ejercicio-back-btn">← Volver</button>
+            <div id="ejercicioContent"></div>
+        </div>
+    </aside>
+
 </div>
 
 <!-- ================= RESULTADO ABAJO ================= -->
@@ -46,7 +63,7 @@
         <button id="clearBtn">🗑 Limpiar todo</button>
     </div>
     <pre id="outputCode"></pre>
-    <div id="executionResult" class="execution-result"></div>
+    <!-- <div id="executionResult" class="execution-result"></div> -->
 </section>
 
 <script src="script.js"></script>
