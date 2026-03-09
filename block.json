@@ -12,6 +12,7 @@
         { "display": "int contador = 0", "code": "int contador = 0;" },
         { "display": "int edad = 19", "code": "int edad = 19;" },
         { "display": "int a = 0", "code": "int a = 0;" },
+        { "display": "int a = 10", "code": "int a = 10;" },
         { "display": "int suma = 0", "code": "int suma = 0;" },
         { "display": "int i = 1", "code": "int i = 1;"}
       ]
@@ -27,7 +28,9 @@
         { "display": "resultado = 3 + 5", "code": "resultado = 3 + 5;" },
         { "display": "contador = contador + 1", "code": "contador++;" },
         { "display": "suma = suma + a", "code": "suma = suma + a;" },
-        { "display": "i = i + 1", "code": "i = i + 1;" }
+        { "display": "i = i + 1", "code": "i = i + 1;" },
+        { "display": "a = a + 1", "code": "a = a + 1;" },
+        { "display": "a = a - 1", "code": "a = a - 1;" }
       ]
     },
     {
@@ -49,10 +52,12 @@
       "cssClass": "loops",
       "blocks": [
         { "display": "repetir", "code": "do{" },
-        { "display": "mientras (a<11) ", "code": "}while(a<11);" },
+        { "display": "mientras (a<10) ", "code": "}while(a<10);" },
         { "display": "mientras (i < 11)", "code": "}while(i<11);"},
-        { "display": "mientras (contador < 11)", "code": "}while(contador<11);"},
-        { "display": "mientras (a < 6)", "code": "}while(a < 6);"}
+        { "display": "mientras (contador < 10)", "code": "}while(contador<10);"},
+        { "display": "mientras (a < 5)", "code": "}while(a < 5);"},
+        { "display": "mientras (a > 0)", "code": "}while(a > 0 );"}
+
       ]
     },
     {
@@ -61,6 +66,7 @@
       "icon": "🟩",
       "cssClass": "logical",
       "blocks": [
+        { "display": "println(a)", "code": "System.out.println(\"El valor de a es \" + a );" },
         { "display": "println(texto)", "code": "System.out.println(texto);" },
         { "display": "println(numero)", "code": "System.out.println(numero);" },
         { "display": "println(resultado)", "code": "System.out.println(resultado);" },

@@ -10,7 +10,7 @@ const CATALOGO_ALGORITMOS = [
     { id: 3, dificultad: "fácil",  factor: 1,    enunciado: "Calcular la suma de 3 + 5 y mostrar resultado." },
     { id: 4, dificultad: "medio",  factor: 0.66, enunciado: "Bucle for para imprimir 'Hola.' 5 veces." },
     { id: 5, dificultad: "medio",  factor: 0.66, enunciado: "Bucle while para contar e imprimir del 1 al 10." },
-    { id: 6, dificultad: "medio",  factor: 0.66, enunciado: "Realiza el sumatorio de 1 a 10." },
+    { id: 6, dificultad: "medio",  factor: 0.66, enunciado: "Condicional para verificar si número > 10 y sumatorio 1-10." },
     { id: 7, dificultad: "difícil", factor: 0.33, enunciado: "Algoritmo de ordenación o lógica compleja." },
     { id: 8, dificultad: "difícil", factor: 0.33, enunciado: "Contar cuántos números > 5 entre los 10 primeros naturales." },
     { id: 9, dificultad: "difícil", factor: 0.33, enunciado: "Condicional para determinar si una persona es mayor de edad." }
@@ -19,7 +19,10 @@ const CATALOGO_ALGORITMOS = [
 function obtenerPuntosFinales(idEjercicio, segundos) {
     const ej = CATALOGO_ALGORITMOS.find(item => item.id === idEjercicio);
     if (!ej) return 0;
-    let calculo = 240 - (segundos * ej.factor);
+    // Puntos máximos según dificultad: difícil=240, medio=160, fácil=80
+    const maxPuntos = ej.dificultad === 'difícil' ? 240 : ej.dificultad === 'medio' ? 160 : 80;
+    const tiempoRestante = 240 - segundos;
+    let calculo = maxPuntos * (tiempoRestante / 240);
     return Math.max(0, Math.round(calculo));
 }
 
@@ -833,45 +836,43 @@ function initConstructor() {
             },
             4: {
                 titulo: "Ejercicio 4 — Hola 5 veces",
-                descripcion: "Usa un bucle repetir mientras para imprimir 'Hola.' 5 veces. Necesitas un contador que vaya de 0 a 5.",
+                descripcion: "Usa un bucle do-while para imprimir 'Hola.' 5 veces. Necesitas un contador que vaya de 0 a 5.",
                 bloques: [
                     { texto: "int a = 0", cat: "variables" },
                     { texto: "repetir", cat: "loops" },
                     { texto: "println(\"Hola\")", cat: "logical" },
                     { texto: "a = a + 1  (usar sangría)", cat: "operations" },
-                    { texto: "mientras (a < 5)", cat: "loops" }
+                    { texto: "mientras (a < 6)", cat: "loops" }
                 ]
             },
             5: {
-                titulo: "Ejercicio 5 — Contar del 0 al 9",
-                descripcion: "Usa un bucle repetir mientras para contar del 0 al 9 e imprimir cada número por pantalla.",
+                titulo: "Ejercicio 5 — Contar del 1 al 10",
+                descripcion: "Usa un bucle do-while para contar del 1 al 10 e imprimir cada número por consola.",
                 bloques: [
                     { texto: "int contador = 0", cat: "variables" },
                     { texto: "repetir", cat: "loops" },
                     { texto: "contador = contador + 1  (usar sangría)", cat: "operations" },
                     { texto: "println(contador)  (usar sangría)", cat: "logical" },
-                    { texto: "mientras (contador <10)", cat: "loops" }
+                    { texto: "mientras (contador < 11)", cat: "loops" }
                 ]
             },
             6: {
                 titulo: "Ejercicio 6 — Condicional y sumatorio",
-                descripcion: "Realiza la suma de los números del 1 al 10. Emplea las variables a y suma",
+                descripcion: "Comprueba si 'a' es mayor que 10. Si lo es, muéstralo. Luego calcula el sumatorio del 1 al 10.",
                 bloques: [
                     { texto: "int a = 0, int suma = 0", cat: "variables" },
+                    { texto: "if (a > 10)", cat: "conditions" },
+                    { texto: "println(a) + println(\"es mayor que 10\")", cat: "logical" },
                     { texto: "repetir → suma = suma + a + a = a + 1", cat: "loops" },
-                    { texto: "mientras (a < 10)", cat: "loops" },
-                    { texto: "println(a)", cat: "logical" }
+                    { texto: "mientras (a < 11)", cat: "loops" },
+                    { texto: "println(suma)", cat: "logical" }
                 ]
             },
             7: {
-                titulo: "Ejercicio 7 — Muestra en orden inverso",
-                descripcion: "Muestra los números del 1 al 10 en orden inverso",
+                titulo: "Ejercicio 7 — Lógica compleja",
+                descripcion: "Ejercicio de lógica avanzada. ¡Piensa bien tu algoritmo!",
                 bloques: [
-                    { texto: "int a = 10", cat: "variables" },
-                    { texto: "repetir", cat: "loops" },
-                    { texto: "a = a - 1  (usar sangría x2)", cat: "operations" },
-                    { texto: "mientras (a > 0)", cat: "loops" },
-                    { texto: "print(\"Del 1 al 10 hay...\")", cat: "logical" }
+                    { texto: "Usa los bloques que necesites", cat: "variables" }
                 ]
             },
             8: {

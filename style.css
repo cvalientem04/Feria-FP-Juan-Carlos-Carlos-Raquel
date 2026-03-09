@@ -847,22 +847,51 @@ header {
     font-weight: 600;
 }
 
-.points-input {
-    width: 70px;
-    padding: 8px;
+.points-total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #4c97ff;
+    margin-right: 8px;
+}
+
+.points-add-input {
+    width: 60px;
+    padding: 6px;
     border: 2px solid #e2e8f0;
     border-radius: 6px;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #4c97ff;
+    color: #22c55e;
     transition: all 0.2s ease;
 }
 
-.points-input:focus {
+.points-add-input::placeholder {
+    color: #cbd5e1;
+    font-weight: 400;
+}
+
+.points-add-input:focus {
     outline: none;
-    border-color: #4c97ff;
-    box-shadow: 0 0 0 2px rgba(76, 151, 255, 0.2);
+    border-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.btn-add-points {
+    background: rgba(34, 197, 94, 0.1);
+    border: 2px solid #bbf7d0;
+    color: #16a34a;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-add-points:hover {
+    background: rgba(34, 197, 94, 0.25);
+    transform: scale(1.1);
 }
 
 .players-table .fecha {
@@ -1131,7 +1160,7 @@ header {
 
 .ranking-table thead th {
     padding: 15px;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     border: none;
 }
@@ -1170,26 +1199,27 @@ header {
 }
 
 .ranking-table .rank-cell {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    width: 60px;
+    width: 50px;
     text-align: center;
 }
 
 .ranking-table .name-cell {
     font-weight: 600;
     color: #1e293b;
+    text-align: center;
 }
 
 .ranking-table .center-cell {
     color: #64748b;
     font-size: 0.95rem;
+    text-align: center;
 }
 
 .ranking-table .points-cell {
     text-align: center;
-    font-weight: 700;
-    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .ranking-table .points-badge {
@@ -1199,11 +1229,13 @@ header {
     padding: 5px 15px;
     border-radius: 20px;
     min-width: 60px;
+    text-align: center;
 }
 
 .ranking-table .date-cell {
     color: #94a3b8;
     font-size: 0.9rem;
+    text-align: center;
 }
 
 /* RESPONSIVE CAMPEONES */

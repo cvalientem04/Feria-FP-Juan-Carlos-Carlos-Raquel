@@ -101,6 +101,10 @@ public class ejemplose {
         System.out.println(resultado);  //println(resultado)
 
 
+        //ejercicio 7
+
+        
+
 
 
     }
